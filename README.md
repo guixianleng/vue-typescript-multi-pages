@@ -1,7 +1,8 @@
 # vue-typescript-multi-pages
-typescript + vue多页面应用配置和构建优化
+typescript + vue 多页面应用配置和构建优化
 
 ## 项目目录结构：
+```shell
 ├── public                     // 静态打包文件
 ├── scripts                    // 自动创建脚本
 ├── src                        // 源代码
@@ -10,21 +11,23 @@ typescript + vue多页面应用配置和构建优化
 │   ├── config                 // 配置相关
 │   ├── utils                  // 全局公用方法
 │   ├── icons                  // 全局svg组件
-│   │── pages                   // 业务模块根目录modules
-│   │	  ├── demo                // 页面
-│           ├── app.vue         // 入口页面
+│   │── pages                  // 业务模块根目录modules
+│   │	  ├── demo               // 页面
+│           ├── app.vue        // 入口页面
 │           └── main.ts        // 入口初始化
 │   │		└── index              // 页面
 ├── .gitignore                 // git 忽略项
-├── package.json               // package.json
+├── package.json               // 安装依赖包
 ├── vue.config.js              // 项目配置
-├── READERME.md                // 文档说明
+├── README.md                // 文档说明
+```
 
 ## 功能点：
-[x] 各环境配置
-[ ] 自动脚本新建页面和组件
-[x] 打包构建优化（dllPlugin）
+- [x] 各环境配置
+- [ ] 自动脚本新建页面和组件
+- [x] 打包构建优化（dllPlugin）
 
+## 构建配置和优化
 ### 1.各环境配置
 根目录下新建`.env.name`，例如：
 `.env.test`文件
@@ -40,19 +43,25 @@ BASE_URL = "http://xxx.com"
 根据不同环境配置不同接口地址和NODE_ENV，方便后续根据打包环境配置处理
 
 ### 2.构建优化
-#### a.webpack dllplugin提取公共库，提升打包速度
-1. 全局安装webpack、webpack-cli，安装CleanWebpackPlugin，
+### 1.webpack dllplugin提取公共库，提升打包速度
+1.1 全局安装`webpack`、 `webpack-cli`
 ```shell
 webpack -v
 ```
-2. 生成 dll，在`package.json`文件新增
+
+1.2 生成 dll，在`package.json`文件新增
 ```js
 "scripts": {
   ...
-  + "dll": "webpack -p --progress --config ./webpack.dll.conf.js"
+  "dll": "webpack -p --progress --config ./webpack.dll.conf.js"
 }
 ```
-3. 根目录新建`webpack.dll.confl.js`文件
+执行生成 dll
+```shell
+ yarn run dll
+```
+
+1.3 根目录新建`webpack.dll.confl.js`文件，安装`CleanWebpackPlugin`插件
 ```js
 const path = require('path')
 const webpack = require('webpack')
@@ -96,8 +105,10 @@ module.exports = {
   ]
 }
 ```
-4. 忽略已编译文件，
-减少 webpack 对公共库的编译时间，在`vue.config.js`中
+1.4 忽略已编译文件
+
+为减少 webpack 对公共库的编译时间，在`vue.config.js`添加
+
 ```js
 const webpack = require('webpack')
 
@@ -113,8 +124,9 @@ module.exports = {
   }
 }
 ```
-5. 自动引入生成的 dll 文件
-安装`add-asset-html-webpack-plugin`，自动引入生成文件
+1.5 自动引入生成的 dll 文件
+
+安装 `add-asset-html-webpack-plugin` ，自动引入生成文件
 ```js
 module.exports = {
   ...
@@ -133,4 +145,5 @@ module.exports = {
   }
 }
 ```
-还有`GZip压缩`、`speed-measure-webpack-plugin`具体详细看`vue.config.js`
+
+还有 `GZip压缩` 、 `speed-measure-webpack-plugin` 具体详细看 `vue.config.js`
