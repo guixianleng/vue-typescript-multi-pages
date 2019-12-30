@@ -47,12 +47,6 @@ module.exports = {
   pages,
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: true,
-  css: {
-    requireModuleExtension: false, // 启用 CSS modules
-    extract: true, // 是否使用css分离插件
-    sourceMap: false, // 开启 CSS source maps?
-    loaderOptions: {} // css预设器配置项
-  },
   devServer: {
     hot: true,
     port: 9531,
@@ -76,7 +70,7 @@ module.exports = {
       // 将 dll 注入到 生成的 html 模板中
       new AddAssetHtmlPlugin({
         // dll文件位置
-        filepath: path.resolve(__dirname, './public/vendor/*.js'),
+        filepath: resolve('./public/vendor/*.js'),
         // dll 引用路径
         publicPath: './vendor',
         // dll最终输出的目录

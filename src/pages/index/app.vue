@@ -18,7 +18,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator'
 export default class App extends Vue {
   // 初始化函数
   go() {
-    location.assign('../demo/demo.html')
+    location.assign('../demo/demo.html/')
   }
 }
 </script>

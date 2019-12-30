@@ -45,7 +45,6 @@ export default class Login extends Vue {
   login() {
     console.log('登录')
   }
-    
 }
 </script>
 

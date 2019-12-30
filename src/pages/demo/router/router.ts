@@ -4,11 +4,25 @@
  * @param {boolean} keepAlive 是否缓存页面
  * @param {string} title 页面标题
  */
+
+const IndexRoute: any = {
+  path: '/',
+  component: () => import('../views/index.vue'),
+  children: []
+}
+
+const routerContext: any = require.context('./modules', true, /\.ts$/)
+routerContext.keys().forEach((route: string) => {
+  // 如果是根目录的 index.js 、不处理
+  if (route.startsWith('./index')) {
+    return
+  }
+  const routerModule = routerContext(route)
+  IndexRoute.children = [...IndexRoute.children, ...(routerModule.default || routerModule)]
+})
+
 export default [
-  {
-    path: '/',
-    redirect: '/login'
-  },
+  IndexRoute,
   {
     path: '/login',
     name: 'login',
